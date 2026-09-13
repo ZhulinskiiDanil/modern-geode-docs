@@ -25,20 +25,27 @@ protected:
     bool init() {
         if (!Popup::init(300.f, 200.f)) return false;
         setTitle("My popup");
+
         auto message = CCLabelBMFont::create("Hello, modder!", "bigFont.fnt");
         message->setScale(0.5f);
         message->setPosition({150.f, 100.f});
+
         m_mainLayer->addChild(message);
+
         return true;
     }
+
 public:
     static TutorialPopup* create() {
         auto result = new TutorialPopup();
+
         if (result->init()) {
             result->autorelease();
             return result;
         }
+
         delete result;
+
         return nullptr;
     }
 };
@@ -46,17 +53,23 @@ public:
 class $modify(PopupTutorialMenu, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
+
         auto size = CCDirector::sharedDirector()->getWinSize();
         auto menu = CCMenu::create();
         menu->setPosition({35.f, size.height - 45.f});
+
         this->addChild(menu, 10);
+
         auto icon = CCSprite::createWithSpriteFrameName("GJ_likeBtn_001.png");
         auto button = CCMenuItemSpriteExtra::create(
             icon, this, menu_selector(PopupTutorialMenu::onTutorial));
         button->setID("tutorial-button"_spr);
+
         menu->addChild(button);
+
         return true;
     }
+
     void onTutorial(CCObject*) {
         if (auto popup = TutorialPopup::create()) {
             popup->show();

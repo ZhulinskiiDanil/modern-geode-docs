@@ -25,12 +25,15 @@ Place this in src/main.cpp of a generated project:
 ```cpp
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
+
 using namespace geode::prelude;
 
 class $modify(MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
+
         log::info("The menu is ready");
+
         return true;
     }
 };

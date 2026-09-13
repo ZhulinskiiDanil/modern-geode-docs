@@ -19,29 +19,37 @@ ScrollLayer с двадцатью строками прямо в главном 
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/ui/ScrollLayer.hpp>
 #include <string>
+
 using namespace geode::prelude;
 
 class $modify(ScrollTutorialMenu, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
+
         auto size = CCDirector::sharedDirector()->getWinSize();
         auto list = ScrollLayer::create(CCSize{140.f, 100.f});
         list->setPosition({size.width - 150.f, size.height - 130.f});
         list->setID("tutorial-list"_spr);
+
         this->addChild(list, 10);
 
         constexpr int count = 20;
         constexpr float rowHeight = 24.f;
         constexpr float contentHeight = count * rowHeight;
+
         list->m_contentLayer->setContentSize({140.f, contentHeight});
+
         for (int i = 0; i < count; ++i) {
             auto text = std::string("Row ") + std::to_string(i + 1);
             auto label = CCLabelBMFont::create(text.c_str(), "bigFont.fnt");
             label->setScale(0.4f);
             label->setPosition({70.f, contentHeight - (i + 0.5f) * rowHeight});
+
             list->m_contentLayer->addChild(label);
         }
+
         list->scrollToTop();
+
         return true;
     }
 };

@@ -13,12 +13,15 @@ Necesitas un proyecto generado y la toolchain. Sustituye src/main.cpp:
 ```cpp [src/main.cpp]
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
+
 using namespace geode::prelude;
 
 class $modify(MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
+
         log::info("The menu is ready");
+
         return true;
     }
 };

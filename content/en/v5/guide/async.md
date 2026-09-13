@@ -23,20 +23,24 @@ Replace src/main.cpp in the generated project:
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/utils/async.hpp>
 #include <Geode/utils/web.hpp>
+
 using namespace geode::prelude;
 
 class $modify(NetworkMenu, MenuLayer) {
     struct Fields {
         async::TaskHolder<web::WebResponse> request;
     };
+
     bool init() {
         if (!MenuLayer::init()) return false;
+
         m_fields->request.spawn(
             web::WebRequest().get("https://example.org"),
             [](web::WebResponse response) {
                 log::info("HTTP status: {}", response.code());
             }
         );
+
         return true;
     }
 };

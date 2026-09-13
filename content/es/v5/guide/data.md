@@ -13,15 +13,20 @@ Necesitas un proyecto, hooks de MenuLayer y bool. Sustituye src/main.cpp, compil
 ```cpp [src/main.cpp]
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
+
 using namespace geode::prelude;
 
 class $modify(MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
+
         auto mod = Mod::get();
         bool wasSeen = mod->getSavedValue<bool>("menu-seen", false);
+
         log::info("Menu was seen before: {}", wasSeen);
+
         mod->setSavedValue<bool>("menu-seen", true);
+
         return true;
     }
 };
