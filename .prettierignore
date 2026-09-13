@@ -1,0 +1,7 @@
+node_modules
+.nuxt
+.output
+.data
+.sites-runtime
+test-results
+package-lock.json
