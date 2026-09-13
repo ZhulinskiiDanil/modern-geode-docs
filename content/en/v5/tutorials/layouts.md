@@ -22,7 +22,7 @@ class $modify(LayoutTutorial, MenuLayer) {
         auto size = CCDirector::sharedDirector()->getWinSize();
 
         auto row = CCNode::create();
-        
+
         row->setContentSize({150.f, 45.f});
         row->setPosition({size.width / 2.f, size.height - 55.f});
         row->setAnchorPoint({0.5f, 0.5f});

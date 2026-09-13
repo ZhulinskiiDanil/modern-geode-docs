@@ -70,6 +70,8 @@ export interface ApiSymbol extends PlatformAvailability {
   replacement?: string
   parameters: string
   returns: string
+  properties?: string
+  methods?: string
   example: string
 }
 export interface ApiAdapter {

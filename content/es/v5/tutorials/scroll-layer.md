@@ -38,7 +38,7 @@ class $modify(ScrollTutorialMenu, MenuLayer) {
         constexpr float contentHeight = count * rowHeight;
 
         list->m_contentLayer->setContentSize({140.f, contentHeight});
-        
+
         for (int i = 0; i < count; ++i) {
             auto text = std::string("Row ") + std::to_string(i + 1);
             auto label = CCLabelBMFont::create(text.c_str(), "bigFont.fnt");

@@ -31,6 +31,8 @@ async function move(delta: number) {
         {{ tab }}
       </button>
     </div>
-    <div :id="groupId + '-panel'" role="tabpanel" :aria-labelledby="groupId + '-tab-' + selected"><slot :name="'tab-' + selected" /></div>
+    <div :id="groupId + '-panel'" role="tabpanel" :aria-labelledby="groupId + '-tab-' + selected">
+      <slot :name="'tab-' + selected" />
+    </div>
   </div>
 </template>
