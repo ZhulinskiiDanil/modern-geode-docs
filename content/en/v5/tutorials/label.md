@@ -41,6 +41,28 @@ class $modify(LabelTutorial, MenuLayer) {
 
 `Label::createRich` accepts a string and a `.fnt` file. `<cg>...</c>` applies a color tag; plain text can use `Label::create`. `setMaxWidth` enables wrapping, and `setAlignment` controls the wrapped lines. Use `setText` for efficient plain-text updates and `setRichText` when the tags change.
 
+## Supported tags
+
+Rich text uses an opening color tag and the shared closing tag `</c>`. These preset tags are supported by `geode::Label`:
+
+| Tag    | Preset color | Example             |
+| ------ | ------------ | ------------------- |
+| `<ca>` | violet       | `<ca>accent</c>`    |
+| `<cb>` | blue         | `<cb>info</c>`      |
+| `<cc>` | pale yellow  | `<cc>hint</c>`      |
+| `<cd>` | pink         | `<cd>soft</c>`      |
+| `<cf>` | aqua         | `<cf>cool</c>`      |
+| `<cg>` | green        | `<cg>success</c>`   |
+| `<cj>` | cyan         | `<cj>link</c>`      |
+| `<cl>` | light blue   | `<cl>note</c>`      |
+| `<co>` | orange       | `<co>warning</c>`   |
+| `<cp>` | magenta      | `<cp>special</c>`   |
+| `<cr>` | red          | `<cr>error</c>`     |
+| `<cs>` | gold         | `<cs>premium</c>`   |
+| `<cy>` | yellow       | `<cy>highlight</c>` |
+
+For an exact color, use the hexadecimal form `<c-rrggbb>text</c>`, for example `<c-ff66aa>custom pink</c>`. Tags can be nested; close them in reverse order. Unknown tags are rendered as normal text, so check the spelling when a color does not appear.
+
 ## Verify and troubleshoot
 
 Build with `geode build` and open the main menu. The centered message should wrap inside 220 units and render the Cyrillic greeting. If glyphs are missing, register a fallback font with `registerFont`. If colors reset after changing text, set the rich text again rather than calling `setText` with markup.

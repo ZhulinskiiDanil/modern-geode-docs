@@ -218,6 +218,8 @@ test('modding tutorials are discoverable in each language and keep version bound
   await expect(page.locator('.prose')).toContainText('geode::Label')
   await expect(page.locator('.prose')).toContainText('createRich')
   await expect(page.locator('.prose')).toContainText('setMaxWidth')
+  await expect(page.locator('.prose')).toContainText('<c-ff66aa>')
+  await expect(page.locator('.prose')).toContainText('<cr>')
 })
 
 test('expanded tutorials are searchable and standalone', async ({ page }) => {

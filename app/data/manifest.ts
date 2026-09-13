@@ -240,9 +240,9 @@ export const articles: Article[] = [
         'cómo hacer crear ScrollLayer scroll lista desplazamiento',
       ),
       tr(
-        'geode Label geode::Label Label::create text label UI text label',
-        'geode Label geode::Label Label::create текст надпись label UI',
-        'geode Label geode::Label Label::create texto etiqueta UI',
+        'geode Label geode::Label Label::create rich text color tags cr cg cb c-hex text label UI',
+        'geode Label geode::Label Label::create rich text цветовые теги cr cg cb c-hex текст надпись label UI',
+        'geode Label geode::Label Label::create rich text etiquetas de color cr cg cb c-hex texto etiqueta UI',
       ),
     ][index]!,
     minutes: index === 0 ? 10 : index === 3 ? 12 : 15,
