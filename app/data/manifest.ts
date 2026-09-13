@@ -13,7 +13,11 @@ export const sections = [
     title: tr('Get Started', 'Начало', 'Primeros pasos'),
     slug: 'get-started/introduction',
   },
-  { id: 'structure', title: tr('Structure', 'Структура', 'Estructura'), slug: 'structure/project' },
+  {
+    id: 'structure',
+    title: tr('Architecture', 'Архитектура', 'Arquitectura'),
+    slug: 'structure/project',
+  },
   { id: 'guide', title: tr('Guide', 'Руководство', 'Guía'), slug: 'guide/hooks' },
   { id: 'api', title: tr('API', 'API', 'API'), slug: 'api/classes' },
   {
@@ -23,6 +27,90 @@ export const sections = [
   },
   { id: 'examples', title: tr('Examples', 'Примеры', 'Ejemplos'), slug: 'examples/library' },
 ] as const
+const projectFiles: Article[] = [
+  {
+    path: 'src/',
+    slug: 'src',
+    description: tr(
+      'Organize the C++ source of your mod.',
+      'Организация исходного кода мода на C++.',
+      'Organiza el código C++ de tu mod.',
+    ),
+  },
+  {
+    path: 'src/main.cpp',
+    slug: 'src/main-cpp',
+    description: tr(
+      'Where the first hook lives and how the game calls it.',
+      'Где находится первый hook и как игра вызывает его.',
+      'Dónde vive el primer hook y cómo lo llama el juego.',
+    ),
+  },
+  {
+    path: 'resources/',
+    slug: 'resources',
+    description: tr(
+      'Include images, fonts, and other mod assets.',
+      'Изображения, шрифты и другие ресурсы мода.',
+      'Imágenes, fuentes y otros recursos del mod.',
+    ),
+  },
+  {
+    path: 'mod.json',
+    slug: 'mod-json',
+    description: tr(
+      'Describe identity, compatibility, and dependencies.',
+      'ID, совместимость и зависимости мода.',
+      'Identidad, compatibilidad y dependencias del mod.',
+    ),
+  },
+  {
+    path: 'CMakeLists.txt',
+    slug: 'cmake',
+    description: tr(
+      'Connect source files, the compiler, and the SDK.',
+      'Связь исходников, компилятора и SDK.',
+      'Conecta código, compilador y SDK.',
+    ),
+  },
+  {
+    path: 'about.md',
+    slug: 'about',
+    description: tr(
+      'Write the description players read in Geode.',
+      'Описание, которое игроки читают в Geode.',
+      'La descripción que leen los jugadores en Geode.',
+    ),
+  },
+  {
+    path: 'changelog.md',
+    slug: 'changelog',
+    description: tr(
+      'Explain what changed in each release.',
+      'Изменения в каждой версии мода.',
+      'Explica los cambios de cada versión.',
+    ),
+  },
+  {
+    path: 'build/',
+    slug: 'build',
+    description: tr(
+      'Understand generated binaries, caches, and packages.',
+      'Сгенерированные бинарные файлы, кеши и пакеты.',
+      'Binarios, cachés y paquetes generados.',
+    ),
+  },
+].map((file) => ({
+  slug: 'structure/' + file.slug,
+  section: 'structure',
+  title: tr(file.path, file.path, file.path),
+  description: file.description,
+  projectPath: file.path,
+  minutes: 5,
+  group: tr('PROJECT FILES', 'ФАЙЛЫ ПРОЕКТА', 'ARCHIVOS DEL PROYECTO'),
+  icon: file.path.endsWith('/') ? 'folder' : 'file',
+  versions: ['v5'],
+}))
 export const articles: Article[] = [
   {
     slug: 'get-started/introduction',
@@ -98,6 +186,7 @@ export const articles: Article[] = [
     icon: 'folder',
     versions: ['v5'],
   },
+  ...projectFiles,
   {
     slug: 'guide/hooks',
     section: 'guide',

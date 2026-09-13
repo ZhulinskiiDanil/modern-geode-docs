@@ -8,10 +8,7 @@ The source code describes behavior. Metadata tells the loader what the package i
 
 ## Explore the project
 
-Select a file below to inspect its role and sample content. The exact generated template can change; keep the CMakeLists.txt produced by your installed CLI.
-
-::file-tree
-::
+Choose a folder or file in the project navigation on the left. Each item opens its own documentation page. Expand src/ to open main.cpp. On a phone, open the navigation menu first.
 
 ## From source to game
 

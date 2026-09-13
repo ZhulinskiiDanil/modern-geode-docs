@@ -87,6 +87,7 @@ function changeVersion(e: Event) {
         :key="s.id"
         :to="link(s.slug)"
         :class="{ active: s.id === section }"
+        :aria-current="s.id === section ? 'page' : undefined"
         >{{ s.title[lang] }}</NuxtLink
       ><a href="https://geode-sdk.org" target="_blank" rel="noopener" class="geode-web"
         >geode-sdk.org <Icon name="external" :size="13"

@@ -40,16 +40,14 @@ const index = computed<SearchResult[]>(() => [
       locale: lang.value,
       version: version.value,
     })),
-  ...apiAdapter
-    .getSymbols(version.value)
-    .map((s) => ({
-      title: s.name,
-      description: s.description[lang.value],
-      slug: 'api/classes#' + s.id,
-      section: 'api' as const,
-      locale: lang.value,
-      version: version.value,
-    })),
+  ...apiAdapter.getSymbols(version.value).map((s) => ({
+    title: s.name,
+    description: s.description[lang.value],
+    slug: 'api/classes#' + s.id,
+    section: 'api' as const,
+    locale: lang.value,
+    version: version.value,
+  })),
 ])
 const results = computed(() =>
   searchDocs(index.value, query.value, lang.value, version.value).slice(0, 12),

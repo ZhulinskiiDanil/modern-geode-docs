@@ -28,12 +28,12 @@ The Node SSR build is in .output/server. Static generation writes .output/public
 
 ## Included pages
 
-Each of these 13 articles has independently written English, Russian and Spanish content:
+Each of these 21 articles has independently written English, Russian and Spanish content:
 
 | Section     | Routes after /{locale}/v5                                     |
 | ----------- | ------------------------------------------------------------- |
 | Get Started | get-started/introduction, installation, cpp-primer, first-mod |
-| Structure   | structure/project                                             |
+| Architecture | structure/project, src, src/main-cpp, resources, mod-json, cmake, about, changelog, build |
 | Guide       | guide/hooks, ui, data, async, migration                       |
 | API         | api/classes                                                   |
 | Publishing  | publishing/checklist                                          |
@@ -44,7 +44,8 @@ There are also three localized workspace homepages and three v4 archive migratio
 ## Architecture
 
 - app/data/manifest.ts is the single source for navigation, article metadata, example discovery and generated routes.
-- content/{en,ru,es}/{v5,v4} contains 42 Markdown files. Nuxt Content renders them with build-time Shiki highlighting.
+- content/{en,ru,es}/{v5,v4} contains 66 Markdown files. Nuxt Content renders them with build-time Shiki highlighting.
+- Architecture uses a persistent project tree in the left sidebar. Folder disclosures and file links are separate controls; each project item has a localized article URL and active state.
 - URL locale and version are authoritative. Missing translations fall back to English **within the same version**.
 - v5 targets SDK **5.10.1**. v4 is explicitly an archive, with migration content only; unavailable archive articles never silently show v5 code.
 - app/data/api.ts implements the typed ApiAdapter with a curated set of real symbols linked to pinned headers. It is intentionally not represented as a complete generated API.
@@ -72,3 +73,4 @@ There are also three localized workspace homepages and three v4 archive migratio
 - Automated accessibility tests complement, rather than replace, keyboard and visual review.
 
 See ARCHITECTURE.md for design and routing decisions and SOURCES.md for the technical research record.
+

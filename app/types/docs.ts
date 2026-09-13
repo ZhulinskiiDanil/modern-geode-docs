@@ -19,6 +19,7 @@ export interface MigrationNotice {
   message: Localized
 }
 export interface Article {
+  projectPath?: string
   slug: string
   section: Section
   title: Localized
@@ -27,6 +28,13 @@ export interface Article {
   group: Localized
   icon: string
   versions: VersionId[]
+}
+export interface ProjectTreeNode {
+  path: string
+  name: string
+  directory: boolean
+  slug?: string
+  children: ProjectTreeNode[]
 }
 export interface NavigationNode {
   label: string

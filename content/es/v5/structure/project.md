@@ -8,10 +8,7 @@ El código describe comportamiento. Los metadatos identifican el paquete. CMake 
 
 ## Explora el proyecto
 
-Selecciona un archivo para ver su función y contenido. La plantilla puede cambiar: conserva CMakeLists.txt generado por tu CLI.
-
-::file-tree
-::
+Elige una carpeta o archivo en la navegación de la izquierda. Cada elemento abre su propia documentación. Expande src/ para abrir main.cpp. En móvil, abre primero el menú de navegación.
 
 ## Del código al juego
 

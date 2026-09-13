@@ -25,7 +25,9 @@ export default defineNuxtConfig({
   },
   content: {
     build: {
-      markdown: { highlight: { theme: 'github-dark', langs: ['cpp', 'json', 'bash', 'cmake'] } },
+      markdown: {
+        highlight: { theme: 'github-dark', langs: ['cpp', 'json', 'bash', 'cmake', 'markdown'] },
+      },
     },
   },
   runtimeConfig: {
