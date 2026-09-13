@@ -81,6 +81,19 @@ describe('example filters', () => {
     expect(filterExamples(examples, { version: 'v4' })).toEqual([]))
 })
 describe('deprecated API', () => {
+  it('includes the curated Geode UI classes', () =>
+    expect(symbols.filter((s) => s.kind === 'class').map((s) => s.name)).toEqual(
+      expect.arrayContaining([
+        'Mod',
+        'Button',
+        'Popup',
+        'ScrollLayer',
+        'Label',
+        'Notification',
+        'Layout',
+        'TextInput',
+      ]),
+    ))
   it('does not label current symbols as deprecated', () =>
     expect(symbols.some((s) => isDeprecated(s, 'v5'))).toBe(false))
   it('applies the deprecation boundary, using a test-only fixture', () => {

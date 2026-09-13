@@ -2,6 +2,8 @@ import type { ApiAdapter, ApiSymbol } from '../types/docs'
 import { tr } from './manifest'
 const source = 'https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/loader/Mod.hpp'
 const platforms = ['Windows', 'macOS', 'Android', 'iOS']
+const uiSource = (header: string) =>
+  'https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/' + header
 export const symbols: ApiSymbol[] = [
   {
     id: 'mod',
@@ -20,6 +22,138 @@ export const symbols: ApiSymbol[] = [
     parameters: '—',
     returns: '—',
     example: 'auto mod = geode::Mod::get();\nauto id = mod->getID();',
+  },
+  {
+    id: 'button',
+    name: 'Button',
+    namespace: 'geode',
+    kind: 'class',
+    signature: 'class geode::Button : public cocos2d::CCNodeRGBA',
+    description: tr(
+      'A touch-friendly UI node with optional sprites, labels, callbacks, and click animations.',
+      'Удобный для касания UI-узел с опциональными спрайтами, надписями, callback и анимациями нажатия.',
+      'Nodo UI táctil con sprites, etiquetas, callbacks y animaciones de pulsación opcionales.',
+    ),
+    source: uiSource('Button.hpp'),
+    platforms,
+    versions: ['v5'],
+    parameters: 'activateCallback: ButtonCallback = nullptr',
+    returns: 'Button*',
+    example:
+      'auto button = geode::Button::create([](geode::Button*) {\n    log::info("clicked");\n});',
+  },
+  {
+    id: 'popup',
+    name: 'Popup',
+    namespace: 'geode',
+    kind: 'class',
+    signature: 'class geode::Popup : public FLAlertLayer',
+    description: tr(
+      'A reusable modal window with a title, close button, background, and a main content layer.',
+      'Переиспользуемое модальное окно с заголовком, кнопкой закрытия, фоном и слоем содержимого.',
+      'Ventana modal reutilizable con título, botón de cierre, fondo y capa de contenido principal.',
+    ),
+    source: uiSource('Popup.hpp'),
+    platforms,
+    versions: ['v5'],
+    parameters: 'width: float · height: float · bg: char const* = "GJ_square01.png"',
+    returns: 'Popup* (subclass)',
+    example:
+      'class MyPopup : public geode::Popup {\n    bool init() {\n        return geode::Popup::init(300.f, 200.f);\n    }\n};',
+  },
+  {
+    id: 'scroll-layer',
+    name: 'ScrollLayer',
+    namespace: 'geode',
+    kind: 'class',
+    signature: 'class geode::ScrollLayer : public CCScrollLayerExt',
+    description: tr(
+      'A clipped, scrollable viewport for lists and other content larger than its visible area.',
+      'Обрезаемая прокручиваемая область для списков и другого содержимого, которое выше viewport.',
+      'Viewport recortado y desplazable para listas y contenido mayor que el área visible.',
+    ),
+    source: uiSource('ScrollLayer.hpp'),
+    platforms,
+    versions: ['v5'],
+    parameters: 'size: CCSize const& · scrollWheelEnabled: bool = true · vertical: bool = true',
+    returns: 'ScrollLayer*',
+    example: 'auto list = geode::ScrollLayer::create({240.f, 120.f});\nlist->scrollToTop();',
+  },
+  {
+    id: 'label',
+    name: 'Label',
+    namespace: 'geode',
+    kind: 'class',
+    signature: 'class geode::Label : public cocos2d::CCNode',
+    description: tr(
+      'A bitmap-font label with Unicode, emoji, fallback fonts, wrapping, and rich color tags.',
+      'Надпись на bitmap-шрифте с Unicode, emoji, fallback-шрифтами, переносами и цветными тегами.',
+      'Etiqueta bitmap con Unicode, emojis, fuentes alternativas, saltos de línea y colores enriquecidos.',
+    ),
+    source: uiSource('Label.hpp'),
+    platforms,
+    versions: ['v5'],
+    parameters: 'text: std::string · font: ZStringView',
+    returns: 'Label*',
+    example:
+      'auto label = geode::Label::createRich("<cg>Ready</c>", "bigFont.fnt");\nlabel->setMaxWidth(220.f);',
+  },
+  {
+    id: 'notification',
+    name: 'Notification',
+    namespace: 'geode',
+    kind: 'class',
+    signature: 'class geode::Notification : public cocos2d::CCNodeRGBA',
+    description: tr(
+      'A short, queue-aware message shown over the game with optional status icons.',
+      'Короткое сообщение поверх игры с очередью уведомлений и опциональной иконкой статуса.',
+      'Mensaje breve sobre el juego, con cola de avisos y un icono de estado opcional.',
+    ),
+    source: uiSource('Notification.hpp'),
+    platforms,
+    versions: ['v5'],
+    parameters: 'text: ZStringView · icon: NotificationIcon = None · time: float = 1.8f',
+    returns: 'Notification*',
+    example:
+      'auto toast = geode::Notification::create("Saved!", geode::NotificationIcon::Success);\ntoast->show();',
+  },
+  {
+    id: 'layout',
+    name: 'Layout',
+    namespace: 'geode',
+    kind: 'class',
+    signature: 'class geode::Layout : public cocos2d::CCObject',
+    description: tr(
+      'The base interface for automatic child positioning through row, column, grid, and custom layouts.',
+      'Базовый интерфейс автоматического размещения дочерних узлов: ряд, колонка, сетка и свои схемы.',
+      'Interfaz base para posicionar hijos automáticamente con layouts de fila, columna, cuadrícula o propios.',
+    ),
+    source: uiSource('Layout.hpp'),
+    platforms,
+    versions: ['v5'],
+    parameters: 'on: cocos2d::CCNode*',
+    returns: 'void (apply) · CCSize (getSizeHint)',
+    example:
+      'auto row = geode::RowLayout::create()->setGap(8.f);\ncontainer->setLayout(row);\ncontainer->updateLayout();',
+  },
+  {
+    id: 'text-input',
+    name: 'TextInput',
+    namespace: 'geode',
+    kind: 'class',
+    signature: 'class geode::TextInput : public cocos2d::CCNode',
+    description: tr(
+      'A single-line text field with a placeholder, label, filters, alignment, and callback mode.',
+      'Однострочное текстовое поле с placeholder, подписью, фильтрами, выравниванием и callback-режимом.',
+      'Campo de texto de una línea con placeholder, etiqueta, filtros, alineación y callbacks.',
+    ),
+    source: uiSource('TextInput.hpp'),
+    platforms,
+    versions: ['v5'],
+    parameters: 'width: float · placeholder: ZStringView · font: ZStringView = "bigFont.fnt"',
+    returns: 'TextInput*',
+    example:
+      'auto input = geode::TextInput::create(220.f, "Player name");\ninput->setLabel("Name");',
   },
   {
     id: 'mod-get',

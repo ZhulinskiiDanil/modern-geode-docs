@@ -56,6 +56,10 @@ test('state, filters, API and project tree', async ({ page }) => {
     .click()
   await expect(page.locator('.symbol-detail h2')).toHaveText('Mod::getSavedValue')
   await expect(page).toHaveURL(/#mod-get-saved-value$/)
+  await page.getByRole('textbox', { name: 'Search symbols…', exact: true }).fill('Button')
+  await expect(page.locator('.symbol-list button')).toHaveCount(1)
+  await page.locator('.symbol-list').getByRole('button', { name: /Button/ }).click()
+  await expect(page.locator('.symbol-detail h2')).toHaveText('Button')
   await page.goto('/en/v5/structure/project')
   await page
     .locator('.project-navigation')
