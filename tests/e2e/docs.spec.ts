@@ -2,7 +2,8 @@ import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 test('language → version → search → tutorial → copy', async ({ page }) => {
   await page.goto('/en/v5')
-  await page.getByLabel('Language', { exact: true }).selectOption('ru')
+  await page.getByLabel('Language', { exact: true }).click()
+  await page.getByRole('menuitemradio', { name: 'Русский' }).click()
   await expect(page).toHaveURL(/\/ru\/v5$/)
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Ваша новая идея')
   await page.getByLabel('Версия SDK', { exact: true }).selectOption('v4')
@@ -28,7 +29,8 @@ test('language → version → search → tutorial → copy', async ({ page }) =
   await expect
     .poll(() => page.evaluate(() => navigator.clipboard.readText()))
     .toContain('class $modify(HelloMenu, MenuLayer)')
-  await page.getByLabel('Язык', { exact: true }).selectOption('es')
+  await page.getByLabel('Язык', { exact: true }).click()
+  await page.getByRole('menuitemradio', { name: 'Español' }).click()
   await expect(page).toHaveURL(/\/es\/v5\/get-started\/first-mod$/)
   await expect(page.getByRole('heading', { name: 'Qué vamos a crear', exact: true })).toBeVisible()
 })
@@ -70,7 +72,9 @@ test('architecture tabs reveal linked project files and preserve article context
   await page.locator('.top-nav').getByRole('link', { name: 'Архитектура', exact: true }).click()
   const tree = page.locator('.project-navigation')
   await expect(tree).toBeVisible()
-  await expect(page.locator('.sidebar-overview, .sidebar-help, .sidebar-section-label, .project-nav-root')).toHaveCount(0)
+  await expect(
+    page.locator('.sidebar-overview, .sidebar-help, .sidebar-section-label, .project-nav-root'),
+  ).toHaveCount(0)
   await expect(page.locator('.breadcrumbs, .reading-progress')).toHaveCount(0)
   await tree.getByRole('button', { name: 'Свернуть src/' }).click()
   await expect(tree.getByRole('link', { name: 'main.cpp', exact: true })).not.toBeVisible()
@@ -85,7 +89,8 @@ test('architecture tabs reveal linked project files and preserve article context
   )
   await page.reload()
   await expect(tree.getByRole('link', { name: 'main.cpp', exact: true })).toBeVisible()
-  await page.getByLabel('Язык', { exact: true }).selectOption('es')
+  await page.getByLabel('Язык', { exact: true }).click()
+  await page.getByRole('menuitemradio', { name: 'Español' }).click()
   await expect(page).toHaveURL(/\/es\/v5\/structure\/src\/main-cpp$/)
   await tree.getByRole('link', { name: 'CMakeLists.txt', exact: true }).click()
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('CMakeLists.txt')
@@ -137,4 +142,34 @@ test('WCAG AA automated checks on dark and light home', async ({ page }) => {
       })),
     ).toEqual([])
   }
+})
+
+test('language menu supports keyboard, dismissal and themes', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/ru/v5/examples/library')
+  const trigger = page.getByRole('button', { name: 'Язык', exact: true })
+  await expect(trigger).toBeEnabled()
+  await trigger.focus()
+  await trigger.press('ArrowDown')
+  await expect(page.getByRole('menuitemradio', { name: 'Русский' })).toBeFocused()
+  await page.keyboard.press('ArrowDown')
+  await expect(page.getByRole('menuitemradio', { name: 'Español' })).toBeFocused()
+  await page.keyboard.press('Escape')
+  await expect(trigger).toBeFocused()
+  await expect(page.getByRole('menu')).toHaveCount(0)
+  await trigger.click()
+  await page.screenshot({ path: 'test-results/language-dark.png' })
+  await page.getByRole('heading', { level: 1 }).click()
+  await expect(page.getByRole('menu')).toHaveCount(0)
+  await page.locator('.header-actions > button').click()
+  await trigger.click()
+  await page.screenshot({ path: 'test-results/language-light.png' })
+  const audit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
+  expect(audit.violations).toEqual([])
+  await page.setViewportSize({ width: 390, height: 844 })
+  await expect
+    .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
+    .toBe(true)
+  await page.getByRole('menuitemradio', { name: 'English' }).click()
+  await expect(page).toHaveURL(/\/en\/v5\/examples\/library$/)
 })

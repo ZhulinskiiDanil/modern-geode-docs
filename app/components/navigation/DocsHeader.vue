@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { sections, versions } from '~/data/manifest'
 import { docPath } from '~/utils/docs'
-import type { Locale, VersionId } from '~/types/docs'
+import type { VersionId } from '~/types/docs'
 defineProps<{ section: string }>()
 const emit = defineEmits<{ search: []; menu: [] }>()
 const { lang, version, slug, link } = useDocs()
@@ -9,12 +9,6 @@ const { t } = useI18n()
 const ready = useReady()
 const theme = useCookie<string>('geode-theme', { default: () => 'dark' })
 const savedVersion = useCookie<string>('geode-version')
-const savedLanguage = useCookie<string>('geode-language')
-function changeLocale(e: Event) {
-  const value = (e.target as HTMLSelectElement).value as Locale
-  savedLanguage.value = value
-  navigateTo(docPath(value, version.value, slug.value))
-}
 function changeVersion(e: Event) {
   const value = (e.target as HTMLSelectElement).value as VersionId
   savedVersion.value = value
@@ -51,18 +45,7 @@ function changeVersion(e: Event) {
         ><kbd>⌘ K</kbd>
       </button>
       <div class="header-actions">
-        <div class="language-select">
-          <Icon name="globe" :size="16" /><select
-            :disabled="!ready"
-            :value="lang"
-            :aria-label="t('language')"
-            @change="changeLocale"
-          >
-            <option value="en">English</option>
-            <option value="ru">Русский</option>
-            <option value="es">Español</option>
-          </select>
-        </div>
+        <LanguageMenu />
         <button
           :disabled="!ready"
           class="icon-button"
