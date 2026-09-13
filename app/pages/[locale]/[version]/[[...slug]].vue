@@ -109,14 +109,9 @@ onBeforeUnmount(() => document.removeEventListener('keydown', key))
   <DocsSidebar :open="mobileOpen" @close="mobileOpen = false" />
   <div class="workspace">
     <main id="main" ref="contentRoot" tabindex="-1">
-      <div class="breadcrumbs">
-        <NuxtLink :to="link()" :aria-label="t('overview')"><Icon name="book" :size="14" /></NuxtLink
-        ><Icon name="right" :size="12" /><span>{{
-          sections.find((s) => s.id === section)?.title[lang]
-        }}</span
-        ><Icon name="right" :size="12" /><span>{{ title }}</span
-        ><button class="mobile-toc" :aria-label="t('onPage')" @click="tocOpen = !tocOpen">
-          <Icon name="list" />
+      <div class="mobile-article-tools">
+        <button class="mobile-toc" :aria-label="t('onPage')" @click="tocOpen = !tocOpen">
+          <Icon name="list" />{{ t('onPage') }}
         </button>
       </div>
       <DocsCallout v-if="version === 'v4'" type="warning"
@@ -179,19 +174,10 @@ onBeforeUnmount(() => document.removeEventListener('keydown', key))
       >
         <Icon name="close" /></button
       ><OnThisPage :items="toc" />
-      <div v-if="!isHome" class="reading-progress">
-        <span>{{ t('progress') }}</span
-        ><strong>{{ completed.length }} / {{ all.length }}</strong
-        ><progress
-          :value="completed.length"
-          :max="all.length"
-          :aria-label="t('reading')"
-        ></progress>
-      </div>
       <div class="right-community">
         <Icon name="blocks" :size="25" />
         <h3>{{ t('community') }}</h3>
-        <p>{{ t('communityDesc') }}</p>
+
         <a href="https://github.com/geode-sdk/docs" target="_blank" rel="noopener"
           >{{ t('github') }} <Icon name="external" :size="13"
         /></a>

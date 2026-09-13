@@ -2500,3 +2500,128 @@ mark {
     height: 38px;
   }
 }
+/* The documentation shell shares one section context across tabs and sidebars. */
+.sidebar {
+  padding: 26px 20px;
+  border-right: 0;
+}
+.section-navigation {
+  display: grid;
+  gap: 2px;
+}
+.section-navigation > a {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 5px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.section-navigation > a:hover {
+  color: var(--text);
+}
+.section-navigation > a[aria-current='page'] {
+  color: var(--accent);
+}
+.section-navigation svg {
+  flex-shrink: 0;
+}
+.project-navigation {
+  margin: 0;
+}
+.project-nav-list {
+  margin-top: 0;
+}
+.project-nav-row {
+  min-height: 32px;
+  border-radius: 0;
+}
+.project-nav-row > a,
+.project-folder-label {
+  font-family: inherit;
+  font-size: 14px;
+  padding-block: 5px;
+}
+.project-nav-row.active {
+  background: transparent;
+}
+.project-nav-children {
+  margin-left: 29px;
+  padding-left: 4px;
+}
+.project-nav-row > a > svg {
+  color: var(--accent);
+}
+.top-nav {
+  padding-left: 20px;
+  gap: 4px;
+}
+.top-nav > a:not(.geode-web) {
+  padding-inline: 10px;
+  gap: 7px;
+  font-size: 14px;
+}
+.top-nav > a.active:after {
+  left: 10px;
+  right: 10px;
+}
+.workspace > main {
+  padding-top: 32px;
+}
+.article-heading {
+  padding-top: 0;
+}
+.section-kicker {
+  color: var(--accent);
+  letter-spacing: 0;
+  font-size: 14px;
+}
+.article-meta {
+  display: none;
+}
+.right-sidebar {
+  padding-top: 32px;
+}
+.right-community {
+  border-top-style: dashed;
+}
+.right-community a {
+  line-height: 1.6;
+}
+.mobile-article-tools {
+  display: none;
+}
+@media (min-width: 1151px) {
+  .sidebar {
+    width: 260px;
+  }
+  .workspace {
+    margin-left: 260px;
+    grid-template-columns: minmax(0, 1fr) 235px;
+  }
+  .workspace > main {
+    padding-inline: 40px 56px;
+  }
+}
+@media (max-width: 1150px) {
+  .mobile-article-tools {
+    display: flex;
+    margin-bottom: 18px;
+  }
+  .mobile-article-tools button {
+    gap: 8px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 800px) {
+  .top-nav {
+    padding-left: 7px;
+  }
+  .section-navigation > a {
+    padding-block: 11px;
+  }
+  .project-nav-row > a {
+    padding-block: 10px;
+  }
+}
