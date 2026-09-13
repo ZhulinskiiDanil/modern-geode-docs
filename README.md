@@ -28,24 +28,24 @@ The Node SSR build is in .output/server. Static generation writes .output/public
 
 ## Included pages
 
-Each of these 31 articles has independently written English, Russian and Spanish content:
+Each of these 32 articles has independently written English, Russian and Spanish content:
 
-| Section      | Routes after /{locale}/v5                                                                                          |
-| ------------ | ------------------------------------------------------------------------------------------------------------------ |
-| Get Started  | get-started/introduction, installation, cpp-primer, first-mod                                                      |
-| Architecture | structure/project, src, src/main-cpp, resources, mod-json, cmake, about, changelog, build                          |
-| Tutorials    | tutorials/buttons, popup, scroll-layer, notifications, settings, saved-data, node-ids, layouts, resources, logging |
-| Guide        | guide/hooks, ui, data, async, migration                                                                            |
-| API          | api/classes                                                                                                        |
-| Publishing   | publishing/checklist                                                                                               |
-| Examples     | examples/library                                                                                                   |
+| Section      | Routes after /{locale}/v5                                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| Get Started  | get-started/introduction, installation, cpp-primer, first-mod                                                             |
+| Architecture | structure/project, src, src/main-cpp, resources, mod-json, cmake, about, changelog, build                                 |
+| Tutorials    | tutorials/buttons, popup, scroll-layer, label, notifications, settings, saved-data, node-ids, layouts, resources, logging |
+| Guide        | guide/hooks, ui, data, async, migration                                                                                   |
+| API          | api/classes                                                                                                               |
+| Publishing   | publishing/checklist                                                                                                      |
+| Examples     | examples/library                                                                                                          |
 
 There are also three localized workspace homepages and three v4 archive migration pages. The first-mod tutorial includes a complete menu button and alert, prerequisites, dependency requirements, source placement, build/install steps, expected behavior and troubleshooting.
 
 ## Architecture
 
 - app/data/manifest.ts is the single source for navigation, article metadata, example discovery and generated routes.
-- content/{en,ru,es}/{v5,v4} contains 96 Markdown files. Nuxt Content renders them with build-time Shiki highlighting.
+- content/{en,ru,es}/{v5,v4} contains 99 Markdown files. Nuxt Content renders them with build-time Shiki highlighting.
 - Architecture uses a persistent project tree in the left sidebar. Folder disclosures and file links are separate controls; each project item has a localized article URL and active state.
 - URL locale and version are authoritative. Missing translations fall back to English **within the same version**.
 - v5 targets SDK **5.10.1**. v4 is explicitly an archive, with migration content only; unavailable archive articles never silently show v5 code.

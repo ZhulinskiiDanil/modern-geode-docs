@@ -192,13 +192,14 @@ export const articles: Article[] = [
     versions: ['v5'],
   },
   ...projectFiles,
-  ...(['buttons', 'popup', 'scroll-layer'] as const).map((topic, index): Article => ({
+  ...(['buttons', 'popup', 'scroll-layer', 'label'] as const).map((topic, index): Article => ({
     slug: 'tutorials/' + topic,
     section: 'tutorials',
     title: [
       tr('Create a Button', 'Как создать Button', 'Crear un Button'),
       tr('Build your own Popup', 'Как сделать свой Popup', 'Crear tu propio Popup'),
       tr('Create a ScrollLayer', 'Как сделать ScrollLayer', 'Crear un ScrollLayer'),
+      tr('Create a geode::Label', 'Как создать geode::Label', 'Crear un geode::Label'),
     ][index]!,
     description: [
       tr(
@@ -215,6 +216,11 @@ export const articles: Article[] = [
         'A standalone scrolling list in the main menu.',
         'Самостоятельный список с прокруткой в главном меню.',
         'Una lista desplazable independiente en el menú principal.',
+      ),
+      tr(
+        'Add readable text to a Geode UI layer.',
+        'Добавьте текст в UI-слой Geode.',
+        'Añade texto legible a una capa UI de Geode.',
       ),
     ][index]!,
     keywords: [
@@ -233,10 +239,15 @@ export const articles: Article[] = [
         'как сделать создать ScrollLayer Scroll Layer скролл прокрутка список',
         'cómo hacer crear ScrollLayer scroll lista desplazamiento',
       ),
+      tr(
+        'geode Label geode::Label Label::create text label UI text label',
+        'geode Label geode::Label Label::create текст надпись label UI',
+        'geode Label geode::Label Label::create texto etiqueta UI',
+      ),
     ][index]!,
-    minutes: index === 0 ? 10 : 15,
+    minutes: index === 0 ? 10 : index === 3 ? 12 : 15,
     group: tr('MODDING TUTORIALS', 'УРОКИ МОДДИНГА', 'TUTORIALES'),
-    icon: ['code', 'layout', 'list'][index]!,
+    icon: ['code', 'layout', 'list', 'file'][index]!,
     versions: ['v5'],
   })),
   ...(

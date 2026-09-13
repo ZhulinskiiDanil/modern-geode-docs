@@ -185,6 +185,7 @@ test('modding tutorials are discoverable in each language and keep version bound
       ['Button', 'buttons'],
       ['ScrollLayer', 'scroll-layer'],
       ['Popup', 'popup'],
+      ['geode::Label', 'label'],
     ]) {
       await page.getByRole('dialog').getByRole('combobox').fill(query)
       await expect(
@@ -197,7 +198,7 @@ test('modding tutorials are discoverable in each language and keep version bound
     }
     await page.keyboard.press('Escape')
     await page.goto(`/${locale}/v5/tutorials/scroll-layer`)
-    await expect(page.locator('.section-navigation a')).toHaveCount(10)
+    await expect(page.locator('.section-navigation a')).toHaveCount(11)
     await expect(page.locator('.prose')).toContainText('m_contentLayer')
     await expect(page.locator('.prose')).not.toContainText('Popup')
     await expect(page.locator('.prose')).toContainText('ScrollTutorialMenu')
@@ -212,6 +213,11 @@ test('modding tutorials are discoverable in each language and keep version bound
   await page.screenshot({ path: 'test-results/tutorials.png' })
   await page.goto('/ru/v4/tutorials/popup')
   await expect(page.locator('.prose')).toHaveCount(0)
+
+  await page.goto('/ru/v5/tutorials/label')
+  await expect(page.locator('.prose')).toContainText('geode::Label')
+  await expect(page.locator('.prose')).toContainText('createRich')
+  await expect(page.locator('.prose')).toContainText('setMaxWidth')
 })
 
 test('expanded tutorials are searchable and standalone', async ({ page }) => {
@@ -227,6 +233,7 @@ test('expanded tutorials are searchable and standalone', async ({ page }) => {
     ['свой спрайт', 'Как добавить свой спрайт', 'resources', 'tutorial-logo.png'],
     ['отладка логи', 'Как отлаживать через логи', 'logging', 'log::debug'],
   ]) {
+    await expect(page.getByRole('button', { name: /Поиск по документации/ })).toBeVisible()
     await page.keyboard.press('Control+k')
     await page.getByRole('dialog').getByRole('combobox').fill(query)
     await page.getByRole('option').filter({ hasText: title }).first().click()
