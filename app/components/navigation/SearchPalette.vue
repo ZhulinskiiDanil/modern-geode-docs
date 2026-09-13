@@ -34,6 +34,8 @@ const index = computed<SearchResult[]>(() => [
       description:
         a.description[lang.value] +
         ' ' +
+        (a.keywords?.[lang.value] || '') +
+        ' ' +
         extract(pages.value?.find((p) => p.path.endsWith('/' + a.slug))?.body),
       slug: a.slug,
       section: a.section,

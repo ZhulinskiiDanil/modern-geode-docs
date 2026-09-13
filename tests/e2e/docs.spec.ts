@@ -173,3 +173,40 @@ test('language menu supports keyboard, dismissal and themes', async ({ page }) =
   await page.getByRole('menuitemradio', { name: 'English' }).click()
   await expect(page).toHaveURL(/\/en\/v5\/examples\/library$/)
 })
+test('modding tutorials are discoverable in each language and keep version boundaries', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  for (const locale of ['en', 'ru', 'es']) {
+    await page.goto(`/${locale}/v5`)
+    await expect(page.locator('.language-trigger')).toBeEnabled()
+    await page.keyboard.press('Control+k')
+    for (const [query, slug] of [
+      ['Button', 'buttons'],
+      ['ScrollLayer', 'scroll-layer'],
+      ['Popup', 'popup'],
+    ]) {
+      await page.getByRole('dialog').getByRole('combobox').fill(query)
+      await expect(
+        page
+          .getByRole('dialog')
+          .getByRole('option')
+          .filter({ hasText: slug === 'buttons' ? 'Button' : query })
+          .first(),
+      ).toBeVisible()
+    }
+    await page.keyboard.press('Escape')
+    await page.goto(`/${locale}/v5/tutorials/scroll-layer`)
+    await expect(page.locator('.section-navigation a')).toHaveCount(3)
+    await expect(page.locator('.prose')).toContainText('m_contentLayer')
+  }
+  await page.goto('/ru/v5')
+  await expect(page.locator('.language-trigger')).toBeEnabled()
+  await page.keyboard.press('Control+k')
+  await page.getByRole('dialog').getByRole('combobox').fill('как сделать свой Popup')
+  await page.getByRole('option').filter({ hasText: 'Как сделать свой Popup' }).click()
+  await expect(page).toHaveURL(/\/ru\/v5\/tutorials\/popup$/)
+  await page.screenshot({ path: 'test-results/tutorials.png' })
+  await page.goto('/ru/v4/tutorials/popup')
+  await expect(page.locator('.prose')).toHaveCount(0)
+})

@@ -18,6 +18,11 @@ export const sections = [
     title: tr('Architecture', 'Архитектура', 'Arquitectura'),
     slug: 'structure/project',
   },
+  {
+    id: 'tutorials',
+    title: tr('Modding Tutorials', 'Уроки моддинга', 'Tutoriales de modding'),
+    slug: 'tutorials/buttons',
+  },
   { id: 'guide', title: tr('Guide', 'Руководство', 'Guía'), slug: 'guide/hooks' },
   { id: 'api', title: tr('API', 'API', 'API'), slug: 'api/classes' },
   {
@@ -187,6 +192,53 @@ export const articles: Article[] = [
     versions: ['v5'],
   },
   ...projectFiles,
+  ...(['buttons', 'popup', 'scroll-layer'] as const).map((topic, index): Article => ({
+    slug: 'tutorials/' + topic,
+    section: 'tutorials',
+    title: [
+      tr('Create a Button', 'Как создать Button', 'Crear un Button'),
+      tr('Build your own Popup', 'Как сделать свой Popup', 'Crear tu propio Popup'),
+      tr('Create a ScrollLayer', 'Как сделать ScrollLayer', 'Crear un ScrollLayer'),
+    ][index]!,
+    description: [
+      tr(
+        'A clickable menu button with a callback.',
+        'Кнопка в меню и обработчик нажатия.',
+        'Un botón del menú con una acción.',
+      ),
+      tr(
+        'A custom window with content and a close button.',
+        'Собственное окно с содержимым и кнопкой закрытия.',
+        'Una ventana propia con contenido y cierre.',
+      ),
+      tr(
+        'A scrollable list inside a custom popup.',
+        'Прокручиваемый список внутри собственного окна.',
+        'Una lista desplazable dentro de una ventana.',
+      ),
+    ][index]!,
+    keywords: [
+      tr(
+        'how to make create button buttons CCMenuItemSpriteExtra callback',
+        'как сделать создать кнопку кнопки Button buttons CCMenuItemSpriteExtra обработчик нажатия',
+        'cómo hacer crear botón botones Button CCMenuItemSpriteExtra',
+      ),
+      tr(
+        'how to make create custom Popup window dialog',
+        'как сделать создать свой кастомный Popup окно диалог',
+        'cómo hacer crear propio Popup ventana diálogo',
+      ),
+      tr(
+        'how to make create ScrollLayer scroll layer scrolling list',
+        'как сделать создать ScrollLayer Scroll Layer скролл прокрутка список',
+        'cómo hacer crear ScrollLayer scroll lista desplazamiento',
+      ),
+    ][index]!,
+    minutes: index === 0 ? 10 : 15,
+    group: tr('MODDING TUTORIALS', 'УРОКИ МОДДИНГА', 'TUTORIALES'),
+    icon: ['code', 'layout', 'list'][index]!,
+    versions: ['v5'],
+  })),
   {
     slug: 'guide/hooks',
     section: 'guide',

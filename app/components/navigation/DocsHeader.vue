@@ -77,6 +77,7 @@ function changeVersion(e: Event) {
               'get-started': 'rocket',
               structure: 'folder',
               guide: 'book',
+              tutorials: 'code',
               api: 'code',
               publishing: 'box',
               examples: 'terminal',

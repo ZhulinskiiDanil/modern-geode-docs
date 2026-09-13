@@ -1,6 +1,7 @@
 export type Locale = 'en' | 'ru' | 'es'
 export type VersionId = 'v5' | 'v4'
-export type Section = 'get-started' | 'structure' | 'guide' | 'api' | 'publishing' | 'examples'
+export type Section =
+  'get-started' | 'structure' | 'guide' | 'api' | 'publishing' | 'examples' | 'tutorials'
 export type Localized = Record<Locale, string>
 export interface SdkVersion {
   id: VersionId
@@ -19,6 +20,7 @@ export interface MigrationNotice {
   message: Localized
 }
 export interface Article {
+  keywords?: Localized
   projectPath?: string
   slug: string
   section: Section
