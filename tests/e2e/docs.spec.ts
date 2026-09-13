@@ -199,6 +199,9 @@ test('modding tutorials are discoverable in each language and keep version bound
     await page.goto(`/${locale}/v5/tutorials/scroll-layer`)
     await expect(page.locator('.section-navigation a')).toHaveCount(3)
     await expect(page.locator('.prose')).toContainText('m_contentLayer')
+    await expect(page.locator('.prose')).not.toContainText('Popup')
+    await expect(page.locator('.prose')).toContainText('ScrollTutorialMenu')
+    await expect(page.locator('.prose')).toContainText('MenuLayer::init()')
   }
   await page.goto('/ru/v5')
   await expect(page.locator('.language-trigger')).toBeEnabled()

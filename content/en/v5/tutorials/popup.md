@@ -4,20 +4,19 @@ title: 'popup'
 
 ## What you will build
 
-A custom 300 × 200 Popup with a title, text, and the built-in close button.
+A custom 300 × 200 Popup with text and closing behavior. The complete example includes a small launcher button.
 
 ## Before you start
 
-Use the First mod project with SDK 5.10.1 and a working build. Finding bottom-menu requires its geode.node-ids dependency. Replace the learning code; do not add a second TutorialMenu definition.
-
-[First mod](/en/v5/get-started/first-mod) · [Button](/en/v5/tutorials/buttons)
+Use a separate mod project targeting SDK 5.10.1 with a working build. No other tutorial is required. Replace src/main.cpp with the complete example; do not merge it with other tutorial hooks. No extra mod.json dependencies are needed.
 
 ## Complete example
 
-Insert this class before TutorialMenu in the button tutorial’s src/main.cpp. Replace only the onTutorial body with the opening code below.
+All code for this tutorial is in one src/main.cpp file.
 
 ```cpp [src/main.cpp]
 #include <Geode/Geode.hpp>
+#include <Geode/modify/MenuLayer.hpp>
 #include <Geode/ui/Popup.hpp>
 using namespace geode::prelude;
 
@@ -43,34 +42,41 @@ public:
         return nullptr;
     }
 };
+
+class $modify(PopupTutorialMenu, MenuLayer) {
+    bool init() {
+        if (!MenuLayer::init()) return false;
+        auto size = CCDirector::sharedDirector()->getWinSize();
+        auto menu = CCMenu::create();
+        menu->setPosition({35.f, size.height - 45.f});
+        this->addChild(menu, 10);
+        auto icon = CCSprite::createWithSpriteFrameName("GJ_likeBtn_001.png");
+        auto button = CCMenuItemSpriteExtra::create(
+            icon, this, menu_selector(PopupTutorialMenu::onTutorial));
+        button->setID("tutorial-button"_spr);
+        menu->addChild(button);
+        return true;
+    }
+    void onTutorial(CCObject*) {
+        if (auto popup = TutorialPopup::create()) {
+            popup->show();
+        }
+    }
+};
 ```
 
 ## How it works
 
-Popup::init builds the window. Attach content to m_mainLayer using window-local coordinates. The factory checks initialization, autoreleases a successful object, and deletes it on failure. SDK 5.10.1 uses non-template Popup; older Popup<> and setup examples do not match this header.
-
-## Open the window
-
-```cpp
-void onTutorial(CCObject*) {
-    if (auto popup = TutorialPopup::create()) {
-        popup->show();
-    }
-}
-```
+Popup::init builds the window. Add content to m_mainLayer in local coordinates. The factory checks init, autoreleases on success, and deletes on failure. The complete MenuLayer hook below the class creates a launcher whose callback calls create and show. SDK 5.10.1 Popup has no template arguments.
 
 ## Verify the result
 
-Build, press the tutorial button, and check the title, text, close button, and reopening. Try Escape/Back and a different game window size.
+Build with geode build and open the main menu. Click the like icon at the top left. Check the title, text, close button, reopening, Escape/Back, and another game window size.
 
 ## Troubleshooting
 
-create does not display the window: call show. Popup<> or initAnchored errors indicate mixed SDK APIs. Misplaced content usually uses screen coordinates instead of m_mainLayer coordinates. Do not manually delete an autoreleased popup.
+Call show after create to display the window. Popup<> or initAnchored errors indicate mixed APIs. Use m_mainLayer coordinates for content. Do not manually delete an autoreleased object.
 
-Signatures were checked against SDK 5.10.1 sources. These examples have not been compiled or run in Geometry Dash in this environment.
+Code was checked against SDK 5.10.1 APIs but has not been compiled or run in-game here.
 
-## Next steps
-
-[Button](/en/v5/tutorials/buttons) · [Popup](/en/v5/tutorials/popup) · [ScrollLayer](/en/v5/tutorials/scroll-layer)
-
-[Geode example mod](https://github.com/geode-sdk/example-mod) · [Popup.hpp v5.10.1](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/Popup.hpp) · [ScrollLayer.hpp v5.10.1](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/ScrollLayer.hpp)
+[Geode SDK source](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/Popup.hpp)

@@ -4,20 +4,19 @@ title: 'popup'
 
 ## Что получится
 
-Собственный Popup размером 300 × 200 с заголовком, текстом и стандартной кнопкой закрытия.
+Собственный Popup размером 300 × 200 с текстом и закрытием. Пример целиком включает небольшую кнопку для проверки открытия окна.
 
 ## Подготовка
 
-Используйте проект из урока «Первый мод» с SDK 5.10.1 и настроенной сборкой. Для поиска bottom-menu нужна зависимость geode.node-ids из этого проекта. Примеры ниже заменяют учебный код, а не добавляются рядом с другим определением TutorialMenu.
-
-[First mod](/ru/v5/get-started/first-mod) · [Button](/ru/v5/tutorials/buttons)
+Нужен отдельный проект мода с SDK 5.10.1 и работающей сборкой. Другие уроки проходить не требуется. Замените src/main.cpp полным примером ниже; не объединяйте его с другими учебными hooks. Дополнительные зависимости в mod.json не нужны.
 
 ## Полный пример
 
-Вставьте класс перед TutorialMenu в src/main.cpp из предыдущего урока. Замените только тело onTutorial кодом открытия ниже.
+Весь код для этого урока находится в одном файле src/main.cpp.
 
 ```cpp [src/main.cpp]
 #include <Geode/Geode.hpp>
+#include <Geode/modify/MenuLayer.hpp>
 #include <Geode/ui/Popup.hpp>
 using namespace geode::prelude;
 
@@ -43,34 +42,41 @@ public:
         return nullptr;
     }
 };
+
+class $modify(PopupTutorialMenu, MenuLayer) {
+    bool init() {
+        if (!MenuLayer::init()) return false;
+        auto size = CCDirector::sharedDirector()->getWinSize();
+        auto menu = CCMenu::create();
+        menu->setPosition({35.f, size.height - 45.f});
+        this->addChild(menu, 10);
+        auto icon = CCSprite::createWithSpriteFrameName("GJ_likeBtn_001.png");
+        auto button = CCMenuItemSpriteExtra::create(
+            icon, this, menu_selector(PopupTutorialMenu::onTutorial));
+        button->setID("tutorial-button"_spr);
+        menu->addChild(button);
+        return true;
+    }
+    void onTutorial(CCObject*) {
+        if (auto popup = TutorialPopup::create()) {
+            popup->show();
+        }
+    }
+};
 ```
 
 ## Как это работает
 
-Popup::init создаёт основу окна. Добавляйте свои узлы в m_mainLayer: координаты здесь относятся к окну, а не к экрану. create проверяет init, ставит успешный объект на autorelease и удаляет его при ошибке. В SDK 5.10.1 используется Popup без шаблонных аргументов; старые примеры с Popup<> и setup не подходят к этому заголовку.
-
-## Откройте окно
-
-```cpp
-void onTutorial(CCObject*) {
-    if (auto popup = TutorialPopup::create()) {
-        popup->show();
-    }
-}
-```
+Popup::init создаёт окно; содержимое добавляется в m_mainLayer в локальных координатах. create проверяет init, вызывает autorelease при успехе и удаляет объект при ошибке. Полный MenuLayer hook ниже класса создаёт кнопку запуска: обработчик вызывает create и show. В SDK 5.10.1 Popup не имеет шаблонных аргументов.
 
 ## Проверьте результат
 
-Соберите мод, нажмите учебную кнопку. Проверьте заголовок, текст, крестик закрытия и повторное открытие. Попробуйте Escape/Back и другой размер окна игры.
+Соберите мод командой geode build и откройте главное меню игры. Нажмите иконку лайка слева сверху. Проверьте заголовок, текст, крестик и повторное открытие. Проверьте Escape/Back и другой размер окна игры.
 
 ## Если не работает
 
-Окно не показывается: create само по себе не открывает его, нужен show. Ошибка Popup<> или initAnchored: не смешивайте старый API с v5. Текст смещён: используйте локальные координаты m_mainLayer. Не удаляйте вручную объект после autorelease.
+Окно не показывается: нужен show после create. Ошибки Popup<> или initAnchored означают смешение разных API. Используйте координаты m_mainLayer для содержимого. Не удаляйте autoreleased объект вручную.
 
-Сигнатуры сверены с исходниками SDK 5.10.1. Эти примеры не компилировались и не запускались в Geometry Dash в данной среде.
+Код сверён с API SDK 5.10.1, но здесь не компилировался и не запускался в игре.
 
-## Дальше
-
-[Button](/ru/v5/tutorials/buttons) · [Popup](/ru/v5/tutorials/popup) · [ScrollLayer](/ru/v5/tutorials/scroll-layer)
-
-[Geode example mod](https://github.com/geode-sdk/example-mod) · [Popup.hpp v5.10.1](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/Popup.hpp) · [ScrollLayer.hpp v5.10.1](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/ScrollLayer.hpp)
+[Geode SDK source](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/Popup.hpp)

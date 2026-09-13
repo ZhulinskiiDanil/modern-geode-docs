@@ -4,61 +4,53 @@ title: 'buttons'
 
 ## Что получится
 
-Кнопка Button в нижнем меню Geometry Dash. Нажатие открывает сообщение.
+Кнопка в левом верхнем углу главного меню. Нажатие записывает Tutorial button clicked в лог Geode.
 
 ## Подготовка
 
-Используйте проект из урока «Первый мод» с SDK 5.10.1 и настроенной сборкой. Для поиска bottom-menu нужна зависимость geode.node-ids из этого проекта. Примеры ниже заменяют учебный код, а не добавляются рядом с другим определением TutorialMenu.
-
-[First mod](/ru/v5/get-started/first-mod) · [Button](/ru/v5/tutorials/buttons)
+Нужен отдельный проект мода с SDK 5.10.1 и работающей сборкой. Другие уроки проходить не требуется. Замените src/main.cpp полным примером ниже; не объединяйте его с другими учебными hooks. Дополнительные зависимости в mod.json не нужны.
 
 ## Полный пример
 
-Поместите весь пример в src/main.cpp.
+Весь код для этого урока находится в одном файле src/main.cpp.
 
 ```cpp [src/main.cpp]
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
 using namespace geode::prelude;
 
-class $modify(TutorialMenu, MenuLayer) {
+class $modify(ButtonTutorialMenu, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
-        auto menu = this->getChildByID("bottom-menu");
-        if (!menu) {
-            log::warn("bottom-menu was not found");
-            return true;
-        }
+        auto size = CCDirector::sharedDirector()->getWinSize();
+        auto menu = CCMenu::create();
+        menu->setPosition({35.f, size.height - 45.f});
+        this->addChild(menu, 10);
         auto icon = CCSprite::createWithSpriteFrameName("GJ_likeBtn_001.png");
         auto button = CCMenuItemSpriteExtra::create(
-            icon, this, menu_selector(TutorialMenu::onTutorial));
+            icon, this, menu_selector(ButtonTutorialMenu::onTutorial));
         button->setID("tutorial-button"_spr);
         menu->addChild(button);
-        menu->updateLayout();
         return true;
     }
     void onTutorial(CCObject*) {
-        FLAlertLayer::create("Tutorial", "The button works!", "OK")->show();
+        log::info("Tutorial button clicked");
     }
 };
 ```
 
 ## Как это работает
 
-CCSprite рисует иконку, CCMenuItemSpriteExtra обрабатывает нажатие, а menu_selector связывает его с методом onTutorial. Обработчик принимает CCObject*. Добавляем кнопку в существующее меню и пересчитываем его layout. Суффикс _spr добавляет ID вашего мода к ID узла.
+CCSprite рисует иконку, CCMenuItemSpriteExtra получает нажатие, menu_selector вызывает onTutorial. Собственный CCMenu добавлен в MenuLayer; координата кнопки внутри него — (0, 0). Обработчик принимает CCObject* и пишет в лог. Поиск узлов по ID не используется.
 
 ## Проверьте результат
 
-Соберите мод привычной командой geode build, запустите игру с установленным модом и откройте главное меню. Найдите иконку лайка: одно нажатие должно открыть The button works!. Закройте сообщение и повторите.
+Соберите мод командой geode build и запустите игру с установленным модом. Нажмите иконку лайка слева сверху и проверьте запись Tutorial button clicked в логе Geode. Повторите нажатие.
 
 ## Если не работает
 
-Нет кнопки: проверьте лог bottom-menu was not found и зависимость node-ids. Иконка есть, но не нажимается: CCMenuItem должен быть внутри CCMenu. Неверный callback: проверьте имя класса и сигнатуру void onTutorial(CCObject*).
+Нет кнопки: проверьте загрузку мода и координаты меню. Нет записи в логе: проверьте сигнатуру void onTutorial(CCObject*) и доступность логов Geode. Sprite сам по себе не получает нажатия: нужен CCMenuItem внутри CCMenu.
 
-Сигнатуры сверены с исходниками SDK 5.10.1. Эти примеры не компилировались и не запускались в Geometry Dash в данной среде.
+Код сверён с API SDK 5.10.1, но здесь не компилировался и не запускался в игре.
 
-## Дальше
-
-[Button](/ru/v5/tutorials/buttons) · [Popup](/ru/v5/tutorials/popup) · [ScrollLayer](/ru/v5/tutorials/scroll-layer)
-
-[Geode example mod](https://github.com/geode-sdk/example-mod) · [Popup.hpp v5.10.1](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/Popup.hpp) · [ScrollLayer.hpp v5.10.1](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/ScrollLayer.hpp)
+[Geode SDK source](https://github.com/geode-sdk/example-mod)

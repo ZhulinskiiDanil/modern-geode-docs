@@ -4,86 +4,61 @@ title: 'scroll-layer'
 
 ## Qué vas a crear
 
-Un ScrollLayer con veinte filas dentro de un Popup y un área visible de 260 × 150.
+Un ScrollLayer de veinte filas directamente en el menú principal, con área visible de 140 × 100.
 
 ## Preparación
 
-Usa el proyecto Primer mod con SDK 5.10.1 y compilación configurada. Buscar bottom-menu requiere su dependencia geode.node-ids. Sustituye el código didáctico; no dupliques la definición de TutorialMenu.
-
-[First mod](/es/v5/get-started/first-mod) · [Button](/es/v5/tutorials/buttons)
+Usa un proyecto independiente con SDK 5.10.1 y compilación configurada. No necesitas otro tutorial. Sustituye src/main.cpp por el ejemplo completo; no mezcles hooks de otros ejemplos. No hacen falta dependencias adicionales en mod.json.
 
 ## Ejemplo completo
 
-Coloca ListPopup antes de TutorialMenu en src/main.cpp del tutorial de botones. Cambia el cuerpo de onTutorial por el código de apertura.
+Todo el código está en un único archivo src/main.cpp.
 
 ```cpp [src/main.cpp]
 #include <Geode/Geode.hpp>
-#include <Geode/ui/Popup.hpp>
+#include <Geode/modify/MenuLayer.hpp>
 #include <Geode/ui/ScrollLayer.hpp>
 #include <string>
 using namespace geode::prelude;
 
-class ListPopup : public Popup {
-protected:
+class $modify(ScrollTutorialMenu, MenuLayer) {
     bool init() {
-        if (!Popup::init(300.f, 240.f)) return false;
-        setTitle("Scrollable list");
-        auto list = ScrollLayer::create(CCSize{260.f, 150.f});
-        list->setPosition({20.f, 35.f});
-        m_mainLayer->addChild(list);
+        if (!MenuLayer::init()) return false;
+        auto size = CCDirector::sharedDirector()->getWinSize();
+        auto list = ScrollLayer::create(CCSize{140.f, 100.f});
+        list->setPosition({size.width - 150.f, size.height - 130.f});
+        list->setID("tutorial-list"_spr);
+        this->addChild(list, 10);
+
         constexpr int count = 20;
-        constexpr float rowHeight = 28.f;
+        constexpr float rowHeight = 24.f;
         constexpr float contentHeight = count * rowHeight;
-        list->m_contentLayer->setContentSize({260.f, contentHeight});
+        list->m_contentLayer->setContentSize({140.f, contentHeight});
         for (int i = 0; i < count; ++i) {
             auto text = std::string("Row ") + std::to_string(i + 1);
             auto label = CCLabelBMFont::create(text.c_str(), "bigFont.fnt");
-            label->setScale(0.45f);
-            label->setPosition({130.f, contentHeight - (i + 0.5f) * rowHeight});
+            label->setScale(0.4f);
+            label->setPosition({70.f, contentHeight - (i + 0.5f) * rowHeight});
             list->m_contentLayer->addChild(label);
         }
         list->scrollToTop();
         return true;
-    }
-public:
-    static ListPopup* create() {
-        auto result = new ListPopup();
-        if (result->init()) {
-            result->autorelease();
-            return result;
-        }
-        delete result;
-        return nullptr;
     }
 };
 ```
 
 ## Cómo funciona
 
-ScrollLayer define el área visible y m_contentLayer contiene los nodos desplazables. El contenido mide 20 × 28 = 560, más que el área visible. Las filas van de arriba abajo; scrollToTop se llama después de ajustar el tamaño. Las filas son etiquetas, no botones.
-
-## Abrir la ventana
-
-```cpp
-void onTutorial(CCObject*) {
-    if (auto popup = ListPopup::create()) {
-        popup->show();
-    }
-}
-```
+ScrollLayer se añade directamente a MenuLayer. Su tamaño 140 × 100 define el área visible; m_contentLayer mide 20 × 24 = 480 de alto. Las filas pertenecen a m_contentLayer y se desplazan con él. scrollToTop se llama al terminar. La posición de demostración se calcula desde la esquina superior derecha; adáptala a tu interfaz.
 
 ## Comprueba el resultado
 
-Abre la ventana: Row 1 debe estar arriba. Desplázate con la rueda o arrastrando hasta Row 20. El contenido exterior debe quedar recortado. Cierra y vuelve a abrir para comprobar la posición inicial. Prueba los gestos en cada plataforma móvil de destino.
+Compila con geode build y abre el menú principal. La lista aparece arriba a la derecha. Comprueba Row 1 y desplázate hasta Row 20 con la rueda o arrastrando. El contenido exterior debe recortarse. Sal y vuelve para comprobar la posición inicial. Prueba gestos en el dispositivo móvil de destino.
 
 ## Solución de problemas
 
-Si no se desplaza, aumenta la altura de m_contentLayer por encima del área visible. Añade las filas a m_contentLayer, no a m_mainLayer. Llama scrollToTop después de configurar tamaño y nodos. Las filas interactivas necesitan CCMenu y pruebas para distinguir pulsación y arrastre.
+La altura del contenido debe superar la del área visible. Añade filas a m_contentLayer. Llama a scrollToTop después del tamaño y las filas. Si se superpone a controles, ajusta posición y tamaño; reserva espacio libre en una interfaz final.
 
-Las firmas se comprobaron con las fuentes del SDK 5.10.1. Estos ejemplos no se han compilado ni ejecutado en Geometry Dash en este entorno.
+El código se contrastó con las APIs del SDK 5.10.1, pero no se compiló ni ejecutó en el juego aquí.
 
-## Siguiente paso
-
-[Button](/es/v5/tutorials/buttons) · [Popup](/es/v5/tutorials/popup) · [ScrollLayer](/es/v5/tutorials/scroll-layer)
-
-[Geode example mod](https://github.com/geode-sdk/example-mod) · [Popup.hpp v5.10.1](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/Popup.hpp) · [ScrollLayer.hpp v5.10.1](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/ScrollLayer.hpp)
+[Geode SDK source](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/ScrollLayer.hpp)

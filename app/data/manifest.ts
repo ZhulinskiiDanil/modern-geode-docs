@@ -212,9 +212,9 @@ export const articles: Article[] = [
         'Una ventana propia con contenido y cierre.',
       ),
       tr(
-        'A scrollable list inside a custom popup.',
-        'Прокручиваемый список внутри собственного окна.',
-        'Una lista desplazable dentro de una ventana.',
+        'A standalone scrolling list in the main menu.',
+        'Самостоятельный список с прокруткой в главном меню.',
+        'Una lista desplazable independiente en el menú principal.',
       ),
     ][index]!,
     keywords: [

@@ -4,86 +4,61 @@ title: 'scroll-layer'
 
 ## What you will build
 
-A ScrollLayer containing twenty rows inside a Popup, with a 260 × 150 viewport.
+A twenty-row ScrollLayer directly in the main menu, with a 140 × 100 viewport.
 
 ## Before you start
 
-Use the First mod project with SDK 5.10.1 and a working build. Finding bottom-menu requires its geode.node-ids dependency. Replace the learning code; do not add a second TutorialMenu definition.
-
-[First mod](/en/v5/get-started/first-mod) · [Button](/en/v5/tutorials/buttons)
+Use a separate mod project targeting SDK 5.10.1 with a working build. No other tutorial is required. Replace src/main.cpp with the complete example; do not merge it with other tutorial hooks. No extra mod.json dependencies are needed.
 
 ## Complete example
 
-Place ListPopup before TutorialMenu in the button tutorial’s src/main.cpp. Replace onTutorial’s body with the opening code below.
+All code for this tutorial is in one src/main.cpp file.
 
 ```cpp [src/main.cpp]
 #include <Geode/Geode.hpp>
-#include <Geode/ui/Popup.hpp>
+#include <Geode/modify/MenuLayer.hpp>
 #include <Geode/ui/ScrollLayer.hpp>
 #include <string>
 using namespace geode::prelude;
 
-class ListPopup : public Popup {
-protected:
+class $modify(ScrollTutorialMenu, MenuLayer) {
     bool init() {
-        if (!Popup::init(300.f, 240.f)) return false;
-        setTitle("Scrollable list");
-        auto list = ScrollLayer::create(CCSize{260.f, 150.f});
-        list->setPosition({20.f, 35.f});
-        m_mainLayer->addChild(list);
+        if (!MenuLayer::init()) return false;
+        auto size = CCDirector::sharedDirector()->getWinSize();
+        auto list = ScrollLayer::create(CCSize{140.f, 100.f});
+        list->setPosition({size.width - 150.f, size.height - 130.f});
+        list->setID("tutorial-list"_spr);
+        this->addChild(list, 10);
+
         constexpr int count = 20;
-        constexpr float rowHeight = 28.f;
+        constexpr float rowHeight = 24.f;
         constexpr float contentHeight = count * rowHeight;
-        list->m_contentLayer->setContentSize({260.f, contentHeight});
+        list->m_contentLayer->setContentSize({140.f, contentHeight});
         for (int i = 0; i < count; ++i) {
             auto text = std::string("Row ") + std::to_string(i + 1);
             auto label = CCLabelBMFont::create(text.c_str(), "bigFont.fnt");
-            label->setScale(0.45f);
-            label->setPosition({130.f, contentHeight - (i + 0.5f) * rowHeight});
+            label->setScale(0.4f);
+            label->setPosition({70.f, contentHeight - (i + 0.5f) * rowHeight});
             list->m_contentLayer->addChild(label);
         }
         list->scrollToTop();
         return true;
-    }
-public:
-    static ListPopup* create() {
-        auto result = new ListPopup();
-        if (result->init()) {
-            result->autorelease();
-            return result;
-        }
-        delete result;
-        return nullptr;
     }
 };
 ```
 
 ## How it works
 
-ScrollLayer is the viewport; m_contentLayer owns scrolling children. The content is 20 × 28 = 560 units tall, larger than the viewport. Rows run top to bottom, and scrollToTop runs after sizing. These rows are labels, not clickable buttons.
-
-## Open the window
-
-```cpp
-void onTutorial(CCObject*) {
-    if (auto popup = ListPopup::create()) {
-        popup->show();
-    }
-}
-```
+ScrollLayer attaches directly to MenuLayer. Its 140 × 100 size defines the viewport; m_contentLayer is 20 × 24 = 480 units tall. Rows belong to m_contentLayer and move with it. Call scrollToTop after populating. The demo position is relative to the top right of the game window; adapt it to your interface.
 
 ## Verify the result
 
-Open the popup and check Row 1 at the top. Use the wheel or drag to reach Row 20; content outside the viewport should be clipped. Close and reopen to verify the initial position. Test gestures separately on each target mobile platform.
+Build with geode build and open the main menu. The list appears at the top right immediately. Check Row 1, then scroll or drag to Row 20. Content outside the viewport should be clipped. Leave and return to verify the initial position. Test gestures on the target mobile device.
 
 ## Troubleshooting
 
-No scrolling: content height must exceed viewport height. Static rows: attach them to m_contentLayer rather than m_mainLayer. Wrong initial position: size and populate before scrollToTop. Clickable rows require a CCMenu and testing click-versus-drag behavior.
+Content height must exceed viewport height. Put rows in m_contentLayer so they move. Call scrollToTop after sizing and adding rows. If the list overlaps game controls, adjust its size and position; reserve free space in a production interface.
 
-Signatures were checked against SDK 5.10.1 sources. These examples have not been compiled or run in Geometry Dash in this environment.
+Code was checked against SDK 5.10.1 APIs but has not been compiled or run in-game here.
 
-## Next steps
-
-[Button](/en/v5/tutorials/buttons) · [Popup](/en/v5/tutorials/popup) · [ScrollLayer](/en/v5/tutorials/scroll-layer)
-
-[Geode example mod](https://github.com/geode-sdk/example-mod) · [Popup.hpp v5.10.1](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/Popup.hpp) · [ScrollLayer.hpp v5.10.1](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/ScrollLayer.hpp)
+[Geode SDK source](https://github.com/geode-sdk/geode/blob/v5.10.1/loader/include/Geode/ui/ScrollLayer.hpp)
