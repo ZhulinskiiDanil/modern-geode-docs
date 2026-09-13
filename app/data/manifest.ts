@@ -239,6 +239,129 @@ export const articles: Article[] = [
     icon: ['code', 'layout', 'list'][index]!,
     versions: ['v5'],
   })),
+  ...(
+    [
+      {
+        slug: 'notifications',
+        title: tr('Show a Notification', 'Как показать Notification', 'Mostrar una Notification'),
+        description: tr(
+          'Display a short status message over the game.',
+          'Короткое уведомление поверх игры.',
+          'Muestra un mensaje breve sobre el juego.',
+        ),
+        keywords: tr(
+          'toast alert message Notification success error',
+          'уведомление тост сообщение Notification успех ошибка',
+          'aviso mensaje Notification éxito error',
+        ),
+        icon: 'sparkles',
+      },
+      {
+        slug: 'settings',
+        title: tr('Add Mod Settings', 'Как добавить настройки', 'Añadir ajustes del mod'),
+        description: tr(
+          'Declare settings in mod.json and read changes in C++.',
+          'Настройки в mod.json и обработка изменений в C++.',
+          'Declara ajustes en mod.json y lee cambios en C++.',
+        ),
+        keywords: tr(
+          'settings option toggle bool mod.json getSettingValue listenForSettingChanges',
+          'настройки опции переключатель bool mod.json getSettingValue',
+          'ajustes opciones interruptor bool mod.json getSettingValue',
+        ),
+        icon: 'filter',
+      },
+      {
+        slug: 'saved-data',
+        title: tr('Save Mod Data', 'Как сохранять данные', 'Guardar datos del mod'),
+        description: tr(
+          'Persist a counter between game sessions.',
+          'Счётчик, который сохраняется между запусками.',
+          'Un contador persistente entre sesiones.',
+        ),
+        keywords: tr(
+          'save saved data persistence getSavedValue setSavedValue counter',
+          'сохранить данные прогресс getSavedValue setSavedValue счётчик',
+          'guardar datos persistencia getSavedValue setSavedValue contador',
+        ),
+        icon: 'database',
+      },
+      {
+        slug: 'node-ids',
+        title: tr('Find Nodes by ID', 'Как находить узлы по ID', 'Buscar nodos por ID'),
+        description: tr(
+          'Safely locate existing UI without child indexes.',
+          'Безопасный поиск UI без индексов дочерних узлов.',
+          'Encuentra la UI sin índices de hijos.',
+        ),
+        keywords: tr(
+          'node ids getChildByID bottom-menu node-ids dependency',
+          'ID узла найти getChildByID bottom-menu node-ids зависимость',
+          'ID nodo buscar getChildByID bottom-menu node-ids dependencia',
+        ),
+        icon: 'network',
+      },
+      {
+        slug: 'layouts',
+        title: tr(
+          'Arrange Nodes with Layouts',
+          'Как использовать Layout',
+          'Organizar nodos con Layout',
+        ),
+        description: tr(
+          'Build a responsive row without manual coordinates.',
+          'Адаптивный ряд без ручных координат.',
+          'Una fila adaptable sin coordenadas manuales.',
+        ),
+        keywords: tr(
+          'layout RowLayout ColumnLayout spacing position updateLayout',
+          'layout компоновка RowLayout ColumnLayout расположение updateLayout',
+          'layout diseño RowLayout ColumnLayout posición updateLayout',
+        ),
+        icon: 'layout',
+      },
+      {
+        slug: 'resources',
+        title: tr('Add a Custom Sprite', 'Как добавить свой спрайт', 'Añadir un sprite propio'),
+        description: tr(
+          'Package a PNG and show it in the game.',
+          'Упакуйте PNG и покажите его в игре.',
+          'Empaqueta un PNG y muéstralo en el juego.',
+        ),
+        keywords: tr(
+          'resource asset image PNG sprite _spr mod.json',
+          'ресурс картинка PNG спрайт _spr mod.json',
+          'recurso imagen PNG sprite _spr mod.json',
+        ),
+        icon: 'file',
+      },
+      {
+        slug: 'logging',
+        title: tr('Debug with Logs', 'Как отлаживать через логи', 'Depurar con registros'),
+        description: tr(
+          'Use log levels and formatted values effectively.',
+          'Уровни логов и форматированный вывод.',
+          'Usa niveles de registro y valores formateados.',
+        ),
+        keywords: tr(
+          'log logging debug info warn error console troubleshoot',
+          'лог логи отладка debug info warn error консоль',
+          'log registro depuración debug info warn error consola',
+        ),
+        icon: 'terminal',
+      },
+    ] as const
+  ).map((tutorial): Article => ({
+    slug: 'tutorials/' + tutorial.slug,
+    section: 'tutorials',
+    title: tutorial.title,
+    description: tutorial.description,
+    keywords: tutorial.keywords,
+    minutes: tutorial.slug === 'settings' || tutorial.slug === 'resources' ? 12 : 8,
+    group: tr('MODDING TUTORIALS', 'УРОКИ МОДДИНГА', 'TUTORIALES'),
+    icon: tutorial.icon,
+    versions: ['v5'],
+  })),
   {
     slug: 'guide/hooks',
     section: 'guide',

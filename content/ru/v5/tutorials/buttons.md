@@ -17,22 +17,30 @@ title: 'buttons'
 ```cpp [src/main.cpp]
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
+
 using namespace geode::prelude;
 
 class $modify(ButtonTutorialMenu, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
+
         auto size = CCDirector::sharedDirector()->getWinSize();
         auto menu = CCMenu::create();
+
         menu->setPosition({35.f, size.height - 45.f});
         this->addChild(menu, 10);
+
         auto icon = CCSprite::createWithSpriteFrameName("GJ_likeBtn_001.png");
+
         auto button = CCMenuItemSpriteExtra::create(
             icon, this, menu_selector(ButtonTutorialMenu::onTutorial));
         button->setID("tutorial-button"_spr);
+
         menu->addChild(button);
+
         return true;
     }
+
     void onTutorial(CCObject*) {
         log::info("Tutorial button clicked");
     }
